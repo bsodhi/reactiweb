@@ -1,0 +1,12 @@
+{
+    "/home": {
+        "requireLogin": true,
+        "roles": "*",
+        "handlerClass": "org.gtungi.reactiweb.HomeHandler"
+    },
+    "/login": {
+        "roles": "*",
+        "isMultipart": false,
+        "handlerClass": "org.gtungi.reactiweb.LoginHandler"
+    }
+}

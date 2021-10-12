@@ -1,0 +1,11 @@
+{
+    "maxRequestSizeMb": "5",
+    "sessionTimeoutMin": "15",
+    "//1. ": "The request URI path pattern for serving the static web content.",
+    "staticFilesPath": "/reactiweb/*",
+
+    "//2. ": "Folder under which the static web content files will be looked up. MUST match the corresponding value in gradle build script.",
+    "staticWebDir": "static_content",
+    "defaultRootPage": "/reactiweb/index.html",
+    "routesConfigFile": "config/routes.json"
+}
