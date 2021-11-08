@@ -6,6 +6,8 @@
 
     "//2. ": "Folder under which the static web content files will be looked up. MUST match the corresponding value in gradle build script.",
     "staticWebDir": "static_content",
+    "//3. ": "Base path to be prefixed for routes defined in routesConfigFile.",
+    "baseUriPath": "/reactiweb",
     "defaultRootPage": "/reactiweb/index.html",
     "routesConfigFile": "config/routes.json"
 }

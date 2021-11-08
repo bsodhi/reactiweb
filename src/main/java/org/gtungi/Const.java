@@ -11,4 +11,5 @@ public interface Const {
     String CK_ALLOWED_ROLES = "CK.ALLOWED.ROLES";
     String CK_REQUIRES_LOGIN = "CK.REQUIRES.LOGIN";
     String DEFAULT_ROOT_PAGE = "defaultRootPage";
+    String BASE_URI_PATH = "baseUriPath";
 }

@@ -78,8 +78,15 @@ public class WebApp {
      */
     public void start(Promise<Void> startPromise, int port) {
         HttpServer server = vertx.createHttpServer();
-
-        setupSession();
+        
+        // Setup the body handler first
+        int maxReqSzMb = Integer.parseInt("" + config.get(Const.MAX_REQ_SIZE_MB));
+        long maxReqSz = 1000000 * maxReqSzMb;
+        router.route().handler(BodyHandler.create().setBodyLimit(maxReqSz));
+        log.info("Max. request body size set to: " + maxReqSzMb + " MB");
+        
+        // Setup the session handler
+        setupSessionHandler();
 
         // Setup RBAC handler for all requests
         router.route().handler(new RbacHandler(routesConfig));
@@ -117,12 +124,15 @@ public class WebApp {
      */
     private void setupRouteHanlders() {
 
-        int maxReqSzMb = Integer.parseInt("" + config.get(Const.MAX_REQ_SIZE_MB));
-        long maxReqSz = 1000000 * maxReqSzMb;
-        router.route().handler(BodyHandler.create().setBodyLimit(maxReqSz));
-        log.info("Max. request body size set to: " + maxReqSzMb + " MB");
+        String baseUri = (String) config.get(Const.BASE_URI_PATH);
+        log.info("Base URI path: " + baseUri);
+
         for (String path : routesConfig.keySet()) {
             RouteConfig rc = routesConfig.get(path);
+            if (baseUri != null) {
+                path = baseUri + path;
+            }
+            
             if (rc.isMultipart) {
                 router.route(path).handler(ctx -> {
                     ctx.request().setExpectMultipart(true);
@@ -153,7 +163,7 @@ public class WebApp {
     /** 
      * Setup the session handler.
     */
-    private void setupSession() {
+    private void setupSessionHandler() {
         // Reaper interval for expired sessions is 15min
         int sto = Integer.parseInt("" + config.get(Const.SESS_TIMEOUT));
         SessionStore ss = LocalSessionStore.create(vertx, "hpp.ams.sessionmap", 1000 * 60 * sto);
